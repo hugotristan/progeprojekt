@@ -92,9 +92,3 @@ else:
     
     
     
-#20-20-20 reegel?
-#telefonituvastus YOLOv5-ga?
-#arvestada ajakulu ka sisse
-#3 asja, mis meelde jäid (kui lühike, siis küsib lähemalt)
-#saaks kuidagi loenguslaidid edastada ja siis küsib suvalt 3 asja??
-    
