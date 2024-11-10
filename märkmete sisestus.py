@@ -1,7 +1,20 @@
 import os
 import time
+import keyboard
+import threading
+
+# Lipp, et jälgida, kas programm peaks lõpetama
+lõpeta_programm = False
+
+def lõpeta_võti():
+    global lõpeta_programm
+    # "kuulab" klahvikombinatsiooni 'Ctrl+F' ja lõpetab programmi, kui seda vajutatakse
+    keyboard.wait('ctrl+f')
+    lõpeta_programm = True
+    print("\n'Ctrl+F' tuvastatud. Programm peatub kohe...")
 
 def main():
+    global lõpeta_programm
     # küsib, kas kasutajal on arvutis märkmete jaoks fail
     vastus = input("Tervist! Kas teil on arvutis märkmete tegemiseks fail? (jah/ei): ").strip().lower()
     
