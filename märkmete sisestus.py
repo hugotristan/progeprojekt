@@ -6,7 +6,7 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 #vaja teha: pip install keyboard, pip install watchdog
 
-# Lipp, et jälgida, kas programm peaks lõpetama
+#jälgib, kas programm peaks lõpetama
 lõpeta_programm = False
 tsüklid = 0
 kasulikud_tsüklid = 0
