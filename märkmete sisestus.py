@@ -78,3 +78,6 @@ def main():
             print("Tsükleid ei toimunud. Programm peatati varakult.")
     else:
         print("Märkmete faili ei antud. Programm lõpetab töö.")
+
+#käivitab programmi
+main()
