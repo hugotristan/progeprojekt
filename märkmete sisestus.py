@@ -3,6 +3,7 @@ import time
 import threading
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
+# Vaja installida watchdog teek, py -m pip install watchdog
 
 # Muutujad, mis jälgivad programmi olekut ja efektiivsust
 lõpeta_programm = False   # Näitab, kas programm peaks lõpetama
