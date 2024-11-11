@@ -4,7 +4,8 @@ import keyboard
 import threading
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
-# vaja teha: pip install keyboard, pip install watchdog
+# vaja teha: pip install keyboard, pip install watchdog 
+# py -m pip install keyboard, py -m pip install watchdog
 
 # jälgib, kas programm peaks lõpetama
 lõpeta_programm = False
