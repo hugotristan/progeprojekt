@@ -10,7 +10,7 @@
 #
 # mõningane eeskuju:
 #
-# Lisakommentaar: Vaja installida watchdog teek (windowsi klahv, otsingusse cmd ning py -m pip install watchdog
+# Lisakommentaar: Vaja installida watchdog teek (windowsi klahv, otsingusse cmd ning py -m pip install watchdog)
 #
 ##################################################
 
