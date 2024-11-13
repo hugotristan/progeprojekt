@@ -104,4 +104,8 @@ else:
     print("Keskendusid kogu aja!")
     
     
+<<<<<<< HEAD:Keskendumise_hindaja-TOIMIV.py
     
+=======
+    
+>>>>>>> 9ca31e633fec4f6e3d328a4eef62ca6977d2bb73:TOIMIB.py
