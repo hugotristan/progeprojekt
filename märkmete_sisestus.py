@@ -1,3 +1,19 @@
+################################################
+# Programmeerimine I
+# 2024/2025 sügissemester
+#
+# Projekt
+# Teema: 
+#
+#
+# Autorid: Hugo Tristan Tammik, Mattias Rahnu
+#
+# mõningane eeskuju:
+#
+# Lisakommentaar: Vaja installida watchdog teek (windowsi klahv, otsingusse cmd ning py -m pip install watchdog
+#
+##################################################
+
 import os
 import time
 import threading
