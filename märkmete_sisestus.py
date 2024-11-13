@@ -2,15 +2,15 @@
 # Programmeerimine I
 # 2024/2025 sügissemester
 #
-# Projekt
-# Teema: 
+# Projekt Tuto
+# Teema: Keskendumise hindaja
 #
 #
 # Autorid: Hugo Tristan Tammik, Mattias Rahnu
 #
-# mõningane eeskuju:
+# mõningane eeskuju: Algseks inspiratsiooniks võetud kirjelduses mainitud face_recognition. 
 #
-# Lisakommentaar: Vaja installida watchdog teek (windowsi klahv, otsingusse cmd ning py -m pip install watchdog)
+# Lisakommentaar: Vaja installida watchdog teek (windowsi klahv, otsingusse cmd ning py -m pip install watchdog või lihtsalt pip install watchdog)
 #
 ##################################################
 
