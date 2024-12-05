@@ -22,6 +22,7 @@ import face_recognition
 import cv2
 from tkinter import *
 from tkinter import ttk
+import keyboard  # Install with `pip install keyboard`
 
 
 
@@ -45,8 +46,21 @@ f = 1
 p=0
 n=0
 
+def on_key_combination():
+    print("Ctrl+q pressed. Exiting...")
+    exit()  # Exit the program
+
 while True:
 
+
+
+    # Set up an event listener for the 'ctrl+q' combination
+    keyboard.add_hotkey('z+s+w', on_key_combination)
+
+    print("Press 'Ctrl+q' to exit the program.")
+
+    # Keep the program running so it can listen for the key combination
+    keyboard.wait()
 
     # vahelejäävad kaadrid
     i=0
