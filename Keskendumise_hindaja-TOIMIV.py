@@ -20,6 +20,9 @@
 
 import face_recognition
 import cv2
+from tkinter import *
+from tkinter import ttk
+
 
 
 
@@ -28,7 +31,7 @@ import cv2
 kaamera = cv2.VideoCapture(0)
 
 # tulevad koordinaadid
-face_locations = []
+näo_asukoht = []
 kontrollitav_kaader = True
 
 # muutuja kasti (näo tuvastuskauguse) jaoks
@@ -58,7 +61,7 @@ while True:
         pisem_kaader = cv2.resize(kaader, (0, 0), fx=d, fy=d)
 
         # Näotuvastus - tuvastab ning lisab koordinaadid järjendisse face_locations
-        face_locations = face_recognition.face_locations(pisem_kaader)
+        näo_asukoht = face_recognition.face_locations(pisem_kaader)
         # Juhul kui nägu ei tuvastatud
         if face_recognition.face_locations(pisem_kaader) != []:
             p +=1
@@ -69,7 +72,7 @@ while True:
     kontrollitav_kaader = not kontrollitav_kaader
 
     # Teeb kasti
-    for (ülemine, parem, alumine, vasak) in face_locations:
+    for (ülemine, parem, alumine, vasak) in näo_asukoht:
         # näo asukoha toob tagasi e kasti asukoha muudab õigeks
         ülemine *= s
         parem *= s
@@ -77,6 +80,8 @@ while True:
         vasak *= s
 
         cv2.rectangle(kaader, (vasak, ülemine), (parem, alumine), (0, 0, 255), 2)
+
+
 
     # Näitab kontrollitavat kaadrit
     cv2.imshow('Video', kaader)
@@ -96,16 +101,13 @@ cv2.destroyAllWindows()
 print(p) #kaadrid, mil oldi kohal
 print(n) #kaadrid, millal ei oldud kohal
 if n != 0:
-    print((p*100)/(p+n))
+    protsent = int(round((p*100)/(p+n), 0))
+    print()
+    print(f"{protsent}%")
     if (p*100)/(p+n) > 80:
-        print("Keskendusid väga palju!")
+        print("Keskendusid väga palju")
         
 else:
-    print("Keskendusid kogu aja!")
+    print("Keskendusid kogu aja")
     
     
-<<<<<<< HEAD:Keskendumise_hindaja-TOIMIV.py
-    
-=======
-    
->>>>>>> 9ca31e633fec4f6e3d328a4eef62ca6977d2bb73:TOIMIB.py
