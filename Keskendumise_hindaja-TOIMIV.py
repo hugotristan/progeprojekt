@@ -25,14 +25,6 @@ import tkinter as tk
 import datetime
 
 
-hetkeaeg = datetime.datetime.now()
-kuupäev = (hetkeaeg.year, hetkeaeg.month, hetkeaeg.day)
-algusaeg=(hetkeaeg.hour, hetkeaeg.minute)
-print(kuupäev)
-print(algusaeg)
-print(hetkeaeg)
-
-
 
 
 
@@ -91,6 +83,16 @@ konspekt.place(x=250, y=510)
 video.place(x=250, y=580)
 
 ekraan.mainloop()
+
+
+
+hetkeaeg = datetime.datetime.now()
+kuupäev = (hetkeaeg.year, hetkeaeg.month, hetkeaeg.day)
+algusaeg=(hetkeaeg.hour, hetkeaeg.minute)
+print(kuupäev)
+print(algusaeg)
+print(hetkeaeg)
+
 
 print(konspekt_linnuke.get())   #Muutujad linnukese panekul
 print(video_linnuke.get())
@@ -177,7 +179,7 @@ print(p)
 print(n)
 protsent = 0.0
 if p != 0:
-    protsent = (p)/(p+n)
+    protsent = round((p)/(p+n), 2)
     print()
     print(f"{protsent*100}%")
     if (p*100)/(p+n) > 80:
@@ -196,6 +198,12 @@ else:
     aeg = (lõppaeg[0] - algusaeg[0])*60 + (60-lõppaeg[1]+algusaeg[1])
 t = (int(aeg/60), aeg%60)
 print(f"Aega kulus: {t} min")
+
+
+ajakulu = str(t[0]) + ":" + str(t[1])
+kuup = str(kuupäev[2]) + "." + str(kuupäev[1])
+algus = str(algusaeg[0]) + "." + str(algusaeg[1])
+aasta = kuupäev[0]
 
 
     
@@ -229,7 +237,7 @@ kanvas.create_text(
 
 
 #protsent visuaalselt
-kanvas.create_rectangle(150, 150, 230, 570, fill="antique white")
+kanvas.create_rectangle(130, 110, 210, 530, fill="antique white")
 if protsent >= 0.8:
     värv = "green"
 elif 0.8 > protsent > 0.70:
@@ -237,10 +245,24 @@ elif 0.8 > protsent > 0.70:
 else:
     värv = "red"
 osakaal = 420*protsent
-kanvas.create_rectangle(150, 570, 230, 570-osakaal, fill=värv)
+
+x=320
+
+kanvas.create_rectangle(130, 530, 210, 530-osakaal, fill=värv)
+kanvas.create_text((170, 550), text=(str(int(round(protsent*100, 0))) + "%"), fill="midnight blue", font=("Arial", 15))
+kanvas.create_text((40, 200), text=f"Aeg: {ajakulu}" , fill="midnight blue", font=("Arial", 10, "bold"))
+kanvas.create_text((55, 260), text=f"Kuupäev: {kuup}", fill="midnight blue", font=("Arial", 10, "bold"))
 
 
-kanvas.create_line(250, 80, 250, 580, width=4, fill="black")
+
+
+
+kanvas.create_line(240, 80, 240, 580, width=4, fill="black")
+kanvas.create_text((275, 360), text="Protsent:", fill="midnight blue")
+kanvas.create_text((265, 390), text="Aeg:", fill="midnight blue")
+kanvas.create_text((275, 420), text="Kuupäev:", fill="midnight blue")
+
+
 #80 on maksimum, veits alla
 puudub=False
 try:
@@ -258,20 +280,22 @@ if puudub == False:
         print()
     if len(andmed) != 0 and andmed[0].strip() != "":
         if len(andmed) > 25:
-            andmed = andmed[-25:-1]
+            andmed = andmed[-26:-1]
         f=open("keskendumiste_ajalugu.txt", encoding="UTF-8")
-        x=310
-
+        
         for i in range(len(andmed)):
             y1=float(andmed[i].strip().split(" - ")[0])
-            a=andmed[i].strip().split(" - ")[1]
+            a1=andmed[i].strip().split(" - ")[1]
+            a2=andmed[i].strip().split(" - ")[2]
             try:
                 y=float(andmed[i+1].strip().split(" - ")[0])
             except:
                 kanvas.create_line(x, 320-y1*2.2, x, 340, width=2, fill="black", dash=(10,1))
                 kanvas.create_oval(x-4, 320-y1*2.2-4, x+4, 320-2.2*y1+4, fill="black")
-                kanvas.create_text((x, 355), text=a, fill="black", font=('Arial', 10, "bold"))
-                
+                kanvas.create_text((x, 360), text=(str(int(round(y1,0))) + "%"), fill="black", font=('Arial', 10, "bold"))
+                kanvas.create_text((x, 390), text=a1, fill="black", font=('Arial', 10))
+                kanvas.create_text((x, 420), text=a2, fill="black", font=('Arial', 8))
+        
                 f.close()
                 break
             else:
@@ -283,7 +307,9 @@ if puudub == False:
             kanvas.create_line(x, 320-y1*2.2, x+35, 320-2.2*y2, width=3, fill=värv)
             kanvas.create_oval(x-4, 320-y1*2.2-4, x+4, 320-2.2*y1+4, fill="black")
             kanvas.create_line(x, 320-y1*2.2, x, 340, width=2, fill="black", dash=(10,1))
-            kanvas.create_text((x, 355), text=a, fill="black", font=('Arial', 10, "bold"))
+            kanvas.create_text((x, 360), text=(str(int(round(y1,0))) + "%"), fill="black", font=('Arial', 10, "bold"))
+            kanvas.create_text((x, 390), text=a1, fill="black", font=('Arial', 10))
+            kanvas.create_text((x, 420), text=a2, fill="black", font=('Arial', 8))
             y1=y2
             x+=35        
 
@@ -308,9 +334,6 @@ print(salvestus_linnuke.get())
 if salvestus_linnuke:
     fail="keskendumiste_ajalugu.txt"
     f=open(fail, "a", encoding="UTF-8")
-    ajakulu = str(t[0]) + ":" + str(t[1])
-    kuup = str(kuupäev[1]) + "." + str(kuupäev[0])
-    algus = str(algusaeg[0]) + "." + str(algusaeg[1])
-    f.write(f"{protsent*100} - {ajakulu} - {kuup} kell {algus}" + "\n")
+    f.write(f"{protsent*100} - {ajakulu} - {kuup} - {aasta} kell {algus}" + "\n")
     f.close()
     
