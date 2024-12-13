@@ -22,6 +22,15 @@ import face_recognition
 import cv2
 import keyboard
 import tkinter as tk
+import datetime
+
+
+hetkeaeg = datetime.datetime.now()
+kuupäev = (hetkeaeg.year, hetkeaeg.month, hetkeaeg.day)
+algusaeg=(hetkeaeg.hour, hetkeaeg.minute)
+print(kuupäev)
+print(algusaeg)
+print(hetkeaeg)
 
 
 
@@ -158,52 +167,51 @@ while True:
         break
 
     
-
 # Lõpetab tegevuse
 kaamera.release()
 cv2.destroyAllWindows()
 
+
 # arvutused
-print(p) #kaadrid, mil oldi kohal
-print(n) #kaadrid, millal ei oldud kohal
+print(p)
+print(n)
 protsent = 0.0
 if p != 0:
     protsent = (p)/(p+n)
     print()
-    print(f"{protsent}%")
+    print(f"{protsent*100}%")
     if (p*100)/(p+n) > 80:
         print("Keskendusid väga palju")
-        
 elif n == 0:
     protsent = 1
     print("Keskendusid kogu aja")
-    
-    
-print(w)
+
+lõppaeg = (hetkeaeg.hour, hetkeaeg.minute)
+aeg=0
+if lõppaeg[0] < algusaeg[0]:
+    aeg = (24-lõppaeg[0] + algusaeg[0])*60 + (60-lõppaeg[1]+algusaeg[1])
+elif lõppaeg[0] == algusaeg[0]:
+    aeg = lõppaeg[1] - algusaeg[1]
+else:
+    aeg = (lõppaeg[0] - algusaeg[0])*60 + (60-lõppaeg[1]+algusaeg[1])
+t = (int(aeg/60), aeg%60)
+print(f"Aega kulus: {t} min")
 
 
-aeg = int(round(n/10*1.07/60, 0))
-print(f"Aega kulus: {aeg} min")
+    
+
 
 
 ekraan = tk.Tk()
- 
-
 ekraan.title(  "KESKENDUMISE HINDAJA")
-
 width= ekraan.winfo_screenwidth()               
 height= ekraan.winfo_screenheight()               
-
-
 ekraan.geometry("%dx%d" % (width, height))
-
 ekraan.configure(bg="bisque3")
 
 
 kanvas = tk.Canvas(ekraan, width=1206, height=600, bg='antique white')
 kanvas.place(x=35, y=35)
-
-
 kanvas.create_rectangle(30, 30, 140, 90, fill="orange")
 kanvas.create_rectangle(34, 34, 136, 86, fill="antique white")
 kanvas.create_text(
@@ -222,9 +230,6 @@ kanvas.create_text(
 
 #protsent visuaalselt
 kanvas.create_rectangle(150, 150, 230, 570, fill="antique white")
-
-
-
 if protsent >= 0.8:
     värv = "green"
 elif 0.8 > protsent > 0.70:
@@ -236,8 +241,6 @@ kanvas.create_rectangle(150, 570, 230, 570-osakaal, fill=värv)
 
 
 kanvas.create_line(250, 80, 250, 580, width=4, fill="black")
-
-
 #80 on maksimum, veits alla
 puudub=False
 try:
@@ -248,25 +251,41 @@ except:
     
 if puudub == False:
     andmed = list(f)
-    if len(andmed) != 0:
+    if andmed[0].strip() == "":
+        print()
+        print("---- Failiga 'keskendumiste_ajalugu.txt' on probleem: Esimene rida on tühi." + "\n" +
+              "---- Kustuta fail või eemalda esimene rida.")
+        print()
+    if len(andmed) != 0 and andmed[0].strip() != "":
         if len(andmed) > 25:
             andmed = andmed[-25:-1]
         f=open("keskendumiste_ajalugu.txt", encoding="UTF-8")
-        x=265
+        x=310
+
         for i in range(len(andmed)):
-            y1=float(andmed[i].strip())
+            y1=float(andmed[i].strip().split(" - ")[0])
+            a=andmed[i].strip().split(" - ")[1]
             try:
-                y=float(andmed[i+1].strip())
+                y=float(andmed[i+1].strip().split(" - ")[0])
             except:
+                kanvas.create_line(x, 320-y1*2.2, x, 340, width=2, fill="black", dash=(10,1))
+                kanvas.create_oval(x-4, 320-y1*2.2-4, x+4, 320-2.2*y1+4, fill="black")
+                kanvas.create_text((x, 355), text=a, fill="black", font=('Arial', 10, "bold"))
+                
                 f.close()
                 break
             else:
                 y2=float(y)
-            kanvas.create_line(x, 320-y1*2.2, x+50, 320-2.2*y2, width=3)
+                if y1 > y2:
+                    värv = "darkred"
+                else:
+                    värv = "green"
+            kanvas.create_line(x, 320-y1*2.2, x+35, 320-2.2*y2, width=3, fill=värv)
+            kanvas.create_oval(x-4, 320-y1*2.2-4, x+4, 320-2.2*y1+4, fill="black")
+            kanvas.create_line(x, 320-y1*2.2, x, 340, width=2, fill="black", dash=(10,1))
+            kanvas.create_text((x, 355), text=a, fill="black", font=('Arial', 10, "bold"))
             y1=y2
-            x+=50
-
-        
+            x+=35        
 
 
 
@@ -289,6 +308,9 @@ print(salvestus_linnuke.get())
 if salvestus_linnuke:
     fail="keskendumiste_ajalugu.txt"
     f=open(fail, "a", encoding="UTF-8")
-    f.write(str(protsent*100) + "\n")
+    ajakulu = str(t[0]) + ":" + str(t[1])
+    kuup = str(kuupäev[1]) + "." + str(kuupäev[0])
+    algus = str(algusaeg[0]) + "." + str(algusaeg[1])
+    f.write(f"{protsent*100} - {ajakulu} - {kuup} kell {algus}" + "\n")
     f.close()
     

@@ -1,6 +1,6 @@
 import tkinter as tk
 
-
+from random import randint # ajutine
 
 #muutjuad: p, n, protsent
 
@@ -39,9 +39,11 @@ kanvas.create_text(
 
 
 #protsent visuaalselt
-kanvas.create_rectangle(130, 150, 210, 570, fill="antique white")
+kanvas.create_rectangle(150, 150, 230, 570, fill="antique white")
 
-protsent = 0.5
+suvaline = randint(0, 100)
+protsent = suvaline/100
+
 if protsent >= 0.8:
     värv = "green"
 elif 0.8 > protsent > 0.70:
@@ -49,32 +51,41 @@ elif 0.8 > protsent > 0.70:
 else:
     värv = "red"
 osakaal = 420*protsent
-kanvas.create_rectangle(130, 570, 210, 570-osakaal, fill=värv)
-
+kanvas.create_rectangle(150, 570, 230, 570-osakaal, fill=värv)
 
 
 kanvas.create_line(250, 80, 250, 580, width=4, fill="black")
-f=open("keskendumiste_ajalugu.txt", encoding="UTF-8")
 
 
-#80 on maksimum, ehk
-x=265
-y1=float(f.readline().strip())
-while True:
-    y=f.readline().strip()
-    if y == "":
-        break
-    else:
-        y2=float(y)
-    kanvas.create_line(x, 320-y1*2.2, x+50, 320-2.2*y2)
-    y1=y2
-    x+=50
+#80 on maksimum, veits alla
+puudub=False
+try:
+    f=open("keskendumiste_ajalugu.txt", encoding="UTF-8")
+except:
+    puudub = True
+    print("Leht loodud")
+    
+if puudub == False:
+    andmed = list(f)
+    if len(andmed) != 0:
+        if len(andmed) > 25:
+            andmed = andmed[-25:-1]
+        f=open("keskendumiste_ajalugu.txt", encoding="UTF-8")
+        x=265
+        for i in range(len(andmed)):
+            y1=float(andmed[i].strip())
+            try:
+                y=float(andmed[i+1].strip())
+            except:
+                f.close()
+                break
+            else:
+                y2=float(y)
+            kanvas.create_line(x, 320-y1*2.2, x+50, 320-2.2*y2, width=3)
+            y1=y2
+            x+=50
 
-
-
-
-
-
+        
 
 
 
@@ -87,11 +98,13 @@ salvestus.config(width=84, height=1)
 salvestus.place(x=35, y=650)
 
 
+
+
+
 ekraan.mainloop()
 
-print(salvestus_linnuke.get())
-
-
+if salvestus_linnuke.get():
+    print("Salvestatud.")
 
 if salvestus_linnuke:
     fail="keskendumiste_ajalugu.txt"
