@@ -77,7 +77,7 @@ ekraan.mainloop()
 
 
 #Muutujad linnukese panekul
-konspet_muutuja = konspekt_linnuke.get()
+konspekt_muutuja = konspekt_linnuke.get()
 video_muutuja = video_linnuke.get()
 print()
 print(f"Konspekt: {konspekt_muutuja}")
