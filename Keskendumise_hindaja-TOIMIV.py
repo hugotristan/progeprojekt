@@ -61,9 +61,9 @@ kanvas.create_text(
 konspekt_linnuke = tk.IntVar()
 video_linnuke = tk.IntVar()
 konspekt = tk.Checkbutton(ekraan, text="Konspekt on arvutis", variable=konspekt_linnuke, 
-                             onvalue=1, offvalue=0)
+                             onvalue=True, offvalue=False)
 video = tk.Checkbutton(ekraan, text="Soovin näha videot", variable=video_linnuke, 
-                             onvalue=1, offvalue=0)
+                             onvalue=True, offvalue=False)
 konspekt.config(bg="antique white", fg="black", font=("Arial", 21), 
                    selectcolor="white")
 video.config(bg="antique white", fg="black", font=("Arial", 21), 
@@ -96,6 +96,13 @@ print(algusaeg)
 print(hetkeaeg)
 
 
+# aeg=0
+# lõppaeg = (hetkeaeg.hour, hetkeaeg.minute)
+# if lõppaeg[1] == algusaeg[1] + 20
+# if algusaeg[1] > lõppaeg[1]:
+#     
+# else:
+    
 
 
 #PÕHIPROGRAMM
@@ -148,11 +155,12 @@ while True:
 
 
     # näitab kontrollitavat kaadrit
-    cv2.imshow('Video', kaader)
+    if video_muutuja:
+        cv2.imshow('Video', kaader)
     
 
-    # vajutades "q" lõpetab tegevuse
-    if cv2.waitKey(1) & 0xFF == ord('q') or keyboard.is_pressed('ctrl + q + space'):
+    # vajutades "ctrl + alt + e" lõpetab tegevuse
+    if cv2.waitKey(1) & 0xFF == ord('q') or keyboard.is_pressed('ctrl + alt + e'):
         break
 
 
@@ -271,7 +279,9 @@ try:
 except:
     puudub = True
     print("Leht 'keskendumiste_ajalugu.txt' loodud")
-    
+
+l=0
+u = False
 if puudub == False:
     andmed = list(f)
     if andmed[0].strip() == "":
@@ -283,9 +293,11 @@ if puudub == False:
     if len(andmed) != 0 and andmed[0].strip() != "":
         if len(andmed) > 25:
             andmed = andmed[-26:-1]
+            u = True
         f=open("keskendumiste_ajalugu.txt", encoding="UTF-8")
         
         for i in range(len(andmed)):
+            l+=1
             y1=float(andmed[i].strip().split(" - ")[0])
             a1=andmed[i].strip().split(" - ")[1]  # ajakulu
             a2=andmed[i].strip().split(" - ")[2]  # kuupäev
@@ -299,6 +311,11 @@ if puudub == False:
                 kanvas.create_text((x, 390), text=a1, fill="black", font=('Arial', 10))
                 kanvas.create_text((x, 420), text=a2, fill="black", font=('Arial', 8))
                 kanvas.create_text((x, 450), text=a3, fill="black", font=('Arial', 8))
+                if l<25 and u:
+                    print()
+                    print("---- Failiga 'keskendumiste_ajalugu.txt' on probleem: Vahepeal on tühi rida." + "\n" +
+                          "---- Kustuta failist tühi rida, et saada kõiki andmeid.")
+                    print()
         
                 f.close()
                 break
