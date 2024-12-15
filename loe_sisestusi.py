@@ -1,49 +1,65 @@
 import time
+from pynput import keyboard #pip install pynput
 
-# Muutujad, mis jälgivad programmi olekut ja efektiivsust
-lopeta_programm = False  # Näitab, kas programm peaks lõpetama
-tsuklid = 0              # Tsüklite arv (iga 5 minuti järel tehtav kontroll)
-kasulikud_tsuklid = 0      # Kasulike tsüklite arv, kus sisendit tehti
+lopeta_programm = False  
+tsuklid = 0             
+kasulikud_tsuklid = 0    
+sisestusi_tuvasatud = 0  
+tsükli_pikkus = 5 # aeg sekundites
 
-# Peamine funktsioon, mis juhib programmi
+def klaviatuuri_kuulaja(tegevus):
+    """Funktsioon, mis registreerib klaviatuuri vajutusi."""
+    global sisestusi_tuvasatud
+    sisestusi_tuvasatud += 1
+
+# peafunktsioon
 def main():
-    global lopeta_programm, tsuklid, kasulikud_tsuklid
+    global lopeta_programm, tsuklid, kasulikud_tsuklid, sisestusi_tuvasatud
 
-    # Teavitab kasutajat programmi eesmärgist
-    print("Tere tulemast! See programm kuulab teie klaviatuuri sisestusi.")
+    # teavitab kasutajat programmi eesmärgist
+    print("Tere tulemast! See programm jälgib kõiki klaviatuuri sisestusi.")
     print("Programmi peatamiseks vajutage Ctrl + C.")
 
+    # alustab klaviatuuri kuulamist
+    kuulaja = keyboard.Listener(on_press=klaviatuuri_kuulaja)
+    kuulaja.start()
+
     try:
-        # Tsükline kontroll ja sisendite lugemine
+        # tsükliline kontroll ja sisendite lugemine
         while True:
-            # Loeb sisendi kasutajalt
-            sisend = input("Sisesta midagi (või vajuta Enter, et jätta vahele): ").strip()
-            if sisend:
-                print("Sisend tuvastatud!")
+            sisestusi_tuvasatud = 0  # nullime tsükli sisestuste lugeri
+
+            # ootab määratud aja enne järgmist tsüklit
+            time.sleep(tsükli_pikkus)
+
+            tsuklid += 1  # suurendab tsüklite arvu ühe võrra
+
+            if sisestusi_tuvasatud > 0:
+                print("Sisestusi tuvastatud viimase tsükli jooksul.")
                 kasulikud_tsuklid += 1
+            else:
+                print("Sisestusi ei tuvastatud viimase tsükli jooksul.")
 
-            # Ootab 5 minutit (300 sekundit) enne järgmist tsüklit
-            time.sleep(300)
-
-            tsuklid += 1  # Suurendab tsüklite arvu ühe võrra
-
-            # Arvutab efektiivsuse, kui palju tsükleid olid kasulikud
+            # arvutab efektiivsuse 
             efektiivsus = (kasulikud_tsuklid / tsuklid) * 100 if tsuklid > 0 else 0
-            print(f"Tsükel {tsuklid}: Tootlikkus siiani on {efektiivsus:.2f}%")
+            print(f"Tsükkel {tsuklid}: Tootlikkus siiani on {efektiivsus:.2f}%")
 
-    # Kasutaja võib programmi käsitsi lõpetada vajutades Ctrl + C
+    # kasutaja saab programmi käsitsi lõpetada vajutades Ctrl + C
     except KeyboardInterrupt:
         print("\nProgramm peatatud kasutaja poolt.")
 
-    # Kuvab lõpliku efektiivsuse, kui oli vähemalt üks tsükkel
+    # kuvab lõpliku efektiivsuse, kui oli vähemalt üks tsükkel
     if tsuklid > 0:
         efektiivsus = (kasulikud_tsuklid / tsuklid) * 100
         print(f"Lõplik tootlikkus: {efektiivsus:.2f}% {tsuklid} tsükli jooksul.")
     else:
         print("Tsüklite arv oli null. Programm peatati varakult.")
 
-    # Märgib programmi lõpetatuks
+    # märgib programmi lõpetatuks
     lopeta_programm = True
 
-# Käivitab programmi
-main()
+    # peatab klaviatuuri kuulamise
+    kuulaja.stop()
+
+if __name__ == "__main__":
+    main()
