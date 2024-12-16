@@ -73,7 +73,7 @@ def kaamera_programm():
     k = 1  # kaadrite arv (mitme kaadri tagant kontrollida kohalolu)
     p = 0  # positiivsed kaadrid
     n = 0  # negatiivsed kaadrid
-    video_muutuja = True  # Lisatud, et kaader oleks vaadatav
+    w = 0
 
     try:
         while True:
@@ -81,6 +81,7 @@ def kaamera_programm():
             while i < k:
                 ret, kaader = kaamera.read()
                 i += 1
+                w += i
 
             if kontrollitav_kaader:
                 pisem_kaader = cv2.resize(kaader, (0, 0), fx=d, fy=d)
@@ -92,6 +93,7 @@ def kaamera_programm():
 
             kontrollitav_kaader = not kontrollitav_kaader
 
+            # kasti loomine ümber näo
             for (ülemine, parem, alumine, vasak) in näo_asukoht:
                 ülemine *= s
                 parem *= s
@@ -99,9 +101,11 @@ def kaamera_programm():
                 vasak *= s
                 cv2.rectangle(kaader, (vasak, ülemine), (parem, alumine), (0, 0, 255), 2)
 
+            #näitab kontrollitavat kaadrit
             if video_muutuja:
                 cv2.imshow('Video', kaader)
 
+            # vajutades "ctrl + alt + e" lõpetab tegevuse
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
 
