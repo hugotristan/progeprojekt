@@ -74,6 +74,7 @@ def kaamera_programm():
     p = 0  # positiivsed kaadrid
     n = 0  # negatiivsed kaadrid
     w = 0
+    video_muutuja = True
 
     try:
         while True:
