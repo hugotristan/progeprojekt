@@ -359,4 +359,3 @@ if salvestus_linnuke.get():
     f=open(fail, "a", encoding="UTF-8")
     f.write(f"{protsent*100} - {ajakulu} - {kuup} - {algus} - {aasta}" + "\n")
     f.close()
-    
