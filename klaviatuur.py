@@ -220,7 +220,7 @@ cv2.destroyAllWindows()
 
 
 print(f"Total cycles with key detection: {key_detected_cycles}")
-print(kõik)
+print(f"Kõik tsüklid: {kõik}")
 # arvutused
 print()
 print(p)
