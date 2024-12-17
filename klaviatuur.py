@@ -146,6 +146,7 @@ print("Waiting for 10 seconds before starting detection...")
 #############################################
 
 while True:
+#####################################################################
 # Calculate elapsed time
     elapsed_time = datetime.datetime.now() - start_time
 
@@ -218,9 +219,10 @@ while True:
 kaamera.release()
 cv2.destroyAllWindows()
 
-
+################################################
 print(f"Total cycles with key detection: {key_detected_cycles}")
 print(f"Kõik tsüklid: {kõik}")
+########################################################
 # arvutused
 print()
 print(p)
